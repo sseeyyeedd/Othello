@@ -6,7 +6,6 @@
 typedef struct
 {
     GUID userId;
-    GUID gameId;
     int score;
 } GameScore;
 typedef struct GameScoreNode
@@ -16,14 +15,14 @@ typedef struct GameScoreNode
 } GameScoreNode;
 char *serializeGameScore(GameScore gameScore)
 {
-    int requiredSize = snprintf(NULL, 0, "{\"userId\":%s,\"gameId\":%s,\"score\":%d}",
-                                serializeGuid(gameScore.userId), serializeGuid(gameScore.gameId), gameScore.score);
+    int requiredSize = snprintf(NULL, 0, "{\"userId\":%s,\"score\":%d}",
+                                serializeGuid(gameScore.userId), gameScore.score);
 
     char *jsonString = (char *)malloc((requiredSize + 1) * sizeof(char));
     if (jsonString != NULL)
     {
-        sprintf(jsonString, "{\"userId\":%s,\"gameId\":%s,\"score\":%d}",
-                serializeGuid(gameScore.userId), serializeGuid(gameScore.gameId), gameScore.score);
+        sprintf(jsonString, "{\"userId\":%s,\"score\":%d}",
+                serializeGuid(gameScore.userId), gameScore.score);
     }
     return jsonString;
 }
@@ -33,10 +32,9 @@ GameScore deserializeGameScore(char *json)
     GameScore gameScore;
     char *userid, *gameid;
     gameid = userid = (char *)malloc(sizeof(char) * 80);
-    sscanf(json, "{\"userId\":%s,\"gameId\":%s,\"score\":%d}",
+    sscanf(json, "{\"userId\":%s,\"score\":%d}",
            userid, gameid, &gameScore.score);
     gameScore.userId = deserializeGuid(userid);
-    gameScore.gameId = deserializeGuid(gameid);
     return gameScore;
 }
 
