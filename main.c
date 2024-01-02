@@ -1,10 +1,12 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<guid.h>
-#include<user.h>
-
+#include "iofile.h"
+#include "guid.h"
+#include "user.h"
+#include "game.h"
+#include "disc.h"
+#include "timeControl.h"
+#include "gameScore.h"
 int main()
 {
-    /* code */
+    
     return 0;
 }

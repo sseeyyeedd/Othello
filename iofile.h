@@ -1,6 +1,8 @@
+#ifndef IOFILE_H
+#define IOFILE_H
 #include<stdio.h>
 #include<stdlib.h>
-#include "../include/iofile.h"
+#include<string.h>
 #define CHAR_SET_SIZE 256
 #define A 2  // 4-0+2-5+2-1+1-9+8
 #define K 32 // 4+0+2+5+2+1+1+9+8
@@ -76,3 +78,4 @@ char *readStringFromFile(const char *filename)
     }
     return text;
 }
+#endif

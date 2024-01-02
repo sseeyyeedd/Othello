@@ -1,4 +1,19 @@
-#include "../include/gameScore.h"
+#ifndef GAMESCORE_H
+#define GAMESCORE_H
+#include"guid.h"
+#include<stdlib.h>
+#include<string.h>
+typedef struct
+{
+    GUID userId;
+    GUID gameId;
+    int score;
+} GameScore;
+typedef struct GameScoreNode
+{
+    GameScore gameScore;
+    struct GameScoreNode *next;
+} GameScoreNode;
 char *serializeGameScore(GameScore gameScore)
 {
     int requiredSize = snprintf(NULL, 0, "{\"userId\":%s,\"gameId\":%s,\"score\":%d}",
@@ -129,3 +144,4 @@ GameScoreNode *deserializeGameScoreNode(char *json)
 
     return head;
 }
+#endif

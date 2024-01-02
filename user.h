@@ -1,5 +1,17 @@
-#include "../include/user.h"
+#ifndef USER_H
+#define USER_H
+#include "guid.h"
 #include <stdlib.h>
+typedef struct
+{
+    GUID id;
+    char username[50];
+} User;
+typedef struct UserNode
+{
+    User user;
+    struct UserNode *next;
+} UserNode;
 char *serializeUser(User user)
 {
     int requiredSize = snprintf(NULL, 0, "{\"id\":%s,\"username\":\"%s\"}",
@@ -127,3 +139,4 @@ UserNode *deserializeUserNode(char *json)
 
     return head;
 }
+#endif

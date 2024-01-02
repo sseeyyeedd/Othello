@@ -1,6 +1,16 @@
-#include "../include/guid.h"
+#ifndef GUID_H
+#define GUID_H
+#include <stdbool.h>
 #include <stdlib.h>
-
+#include<time.h>
+#include<stdio.h>
+typedef struct
+{
+    unsigned long data1;
+    unsigned short data2;
+    unsigned short data3;
+    unsigned char data4[8];
+} GUID;
 GUID generateGUID()
 {
     GUID guid;
@@ -62,3 +72,5 @@ GUID deserializeGuid(const char *json)
     return guid;
 }
 
+
+#endif

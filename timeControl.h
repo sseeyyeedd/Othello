@@ -1,5 +1,15 @@
-#include "../include/timeControl.h"
+#ifndef TIMECONTROL_H
+#define TIMECONTROL_H
 #include <stdlib.h>
+#include <stdbool.h>
+#include<string.h>
+typedef struct
+{
+    int whitePassedTime;
+    int blackPassedTime;
+    int timeLimit;
+    bool isTimed;
+} TimeControl;
 char *serializeTimeControl(TimeControl tc)
 {
     int requiredSize = snprintf(NULL, 0, "{ \"whitePassedTime\": %d, \"blackPassedTime\": %d, \"timeLimit\": %d, \"isTimed\": %s }",
@@ -48,3 +58,4 @@ TimeControl deserializeTimeControl(const char *json)
 
     return tc;
 }
+#endif
