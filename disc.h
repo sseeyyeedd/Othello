@@ -1,9 +1,10 @@
 #ifndef DISC_H
 #define DISC_H
-typedef enum
+ enum Disc
 {
     None,
     White,
     Black
-} Disc;
+} ;
+typedef enum Disc Disc;
 #endif

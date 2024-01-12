@@ -4,8 +4,17 @@
 #include<stdlib.h>
 #include<string.h>
 #define CHAR_SET_SIZE 256
-#define A 2  // 4-0+2-5+2-1+1-9+8
+#define A 3  // (4+0+2+5+2+1+1+9+8)/10
 #define K 32 // 4+0+2+5+2+1+1+9+8
+int modInverse(int a, int m) {
+    a = a % m;
+    for (int x = 1; x < m; x++) {
+        if ((a * x) % m == 1) {
+            return x;
+        }
+    }
+    return -1; 
+}
 char *encryptString(const char *plaintext)
 {
     int length = strlen(plaintext);
@@ -24,14 +33,13 @@ char *decryptString(const char *encryptedText)
     int length = strlen(encryptedText);
     char *decryptedText = (char *)malloc(sizeof(char) * (length + 1));
 
-    int aInverse = 0;
-    while (((A * aInverse) % CHAR_SET_SIZE) != 1)
-    {
-        aInverse++;
+    int aInverse = modInverse(A, CHAR_SET_SIZE);
+    if (aInverse == -1) {
+        printf("Multiplicative inverse does not exist for given A and character set size.\n");
+        return NULL;
     }
 
-    for (int i = 0; i < length; i++)
-    {
+    for (int i = 0; i < length; i++) {
         decryptedText[i] = (aInverse * (encryptedText[i] - K + CHAR_SET_SIZE)) % CHAR_SET_SIZE;
     }
     decryptedText[length] = '\0';
@@ -41,18 +49,11 @@ char *decryptString(const char *encryptedText)
 void saveStringToFile(const char *filename, const char *text)
 {
     FILE *file = fopen(filename, "wb");
-    if (file != NULL)
-    {
-        fwrite(text, sizeof(char), strlen(text), file);
-        fclose(file);
-    }
-    else
-    {
-        printf("Error opening file '%s' for writing!\n", filename);
-    }
+    fwrite(encryptString(text), sizeof(char), strlen(text), file);
+    fclose(file);
 }
 
-char *readStringFromFile(const char *filename)
+char *readStringFromFile(const char *filename,char* defaultText)
 {
     FILE *file = fopen(filename, "rb");
     char *text = NULL;
@@ -74,8 +75,10 @@ char *readStringFromFile(const char *filename)
     }
     else
     {
-        printf("Error opening file '%s' for reading!\n", filename);
+        
+        saveStringToFile(filename,strcat(defaultText,"\0"));
+        return defaultText;
     }
-    return text;
+    return decryptString(text);
 }
 #endif
