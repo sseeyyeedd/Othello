@@ -452,7 +452,7 @@ int Move(Game *game, Coordinates legalMoves[], int legalMoveCount, int moveStatu
                 }
                 else
                 {
-                    printf("You can't return right now!");
+                    printf("You can't return right now!\n");
                 }
 
                 break;
@@ -485,7 +485,7 @@ int Move(Game *game, Coordinates legalMoves[], int legalMoveCount, int moveStatu
                 }
                 else
                 {
-                    printf("You can't return right now!");
+                    printf("You can't return right now!\n");
                 }
                 break;
             case 'X':
