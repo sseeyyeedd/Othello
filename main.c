@@ -79,7 +79,7 @@ int main()
                     {
                         printf("Game over!\n%s is victorious!\n",currentGame.whitePlayer);
                     }
-                    currentGame.IsCompleated=true;
+                    CompleateGame(games,gamesCount,currentGame.id);
                         
                     break;
                 }
@@ -106,7 +106,7 @@ int main()
                         saveStringToFile(gameScoresFile, serializeScoreArray(Scores, scoresCount));
                         system("cls");
                         printf("Game over!\n%s is victorious!\n",currentGame.whitePlayer);
-                        currentGame.IsCompleated=true;
+                        CompleateGame(games,gamesCount,currentGame.id);
                         break;
                     }
                 }
@@ -121,7 +121,7 @@ int main()
                         saveStringToFile(gameScoresFile, serializeScoreArray(Scores, scoresCount));
                         system("cls");
                         printf("Game over!\n%s is victorious!\n",currentGame.blackPlayer);
-                        currentGame.IsCompleated=true;
+                        CompleateGame(games,gamesCount,currentGame.id);
                         break;
                     }
                 }
@@ -135,7 +135,10 @@ int main()
                 printf("Game saved with id %d\n",currentGame.id);
                 break;
             }
+            
+            saveStringToFile(gamesFile,serializeGameArray(games,gamesCount));
         }
+        
     }
 
     return 0;

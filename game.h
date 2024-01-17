@@ -43,12 +43,12 @@ bool isBoardEmpty(Disc Board[][8]);
 bool CheckPlayers(Game game, char p1[], char p2[]);
 char *BoardToString(Disc Board[][8])
 {
-    char *str=(char*)malloc(sizeof(char)*65);
+    char *str = (char *)malloc(sizeof(char) * 65);
     for (int i = 0; i < 8; i++)
     {
         for (int j = 0; j < 8; j++)
         {
-            str[i * 8 + j] = 48+Board[i][j];
+            str[i * 8 + j] = 48 + Board[i][j];
         }
     }
     str[64] = '\0';
@@ -66,18 +66,18 @@ void StringToBoard(Disc Board[][8], char *str)
 }
 char *p2mToString(int p2m[])
 {
-    char *str=(char*)malloc(sizeof(char)*9);
+    char *str = (char *)malloc(sizeof(char) * 9);
 
     sprintf(str, "%04d%04d", p2m[0], p2m[1]);
     return str;
 }
 void stringTop2m(int p2m[], char *str)
 {
-    sscanf(str,"%04d%04d", &p2m[0], &p2m[1]);
+    sscanf(str, "%04d%04d", &p2m[0], &p2m[1]);
 }
 char *ScoresToString(int scores[], int len)
 {
-    char *str=(char*)malloc(sizeof(char)*len * 2 + 1);
+    char *str = (char *)malloc(sizeof(char) * len * 2 + 1);
     for (int i = 0; i < len; i++)
     {
         char s[3];
@@ -129,23 +129,21 @@ bool isBoardEmpty(Disc Board[][8])
     }
     return false;
 }
-int CountDiscs(Disc Board[][8],Disc disc){
-    int counter=0;
+int CountDiscs(Disc Board[][8], Disc disc)
+{
+    int counter = 0;
     for (int i = 0; i < 8; i++)
     {
         for (int j = 0; j < 8; j++)
         {
-            if (Board[i][j]==disc)
+            if (Board[i][j] == disc)
             {
-                
+
                 counter++;
             }
-            
         }
-        
     }
     return counter;
-    
 }
 void turnDiscs(Game *game, Coordinates move)
 {
@@ -243,10 +241,10 @@ void printCurrentGame(Game game)
                 switch (i)
                 {
                 case 8:
-                    printf(" %s(O) Discs:%d", game.blackPlayer, CountDiscs(game.Board,Black));
+                    printf(" %s(O) Discs:%d", game.blackPlayer, CountDiscs(game.Board, Black));
                     break;
                 case 9:
-                    printf(" %s(#) Discs:%d", game.whitePlayer, CountDiscs(game.Board,White));
+                    printf(" %s(#) Discs:%d", game.whitePlayer, CountDiscs(game.Board, White));
                     break;
                 case 10:
                     printf("-----------------");
@@ -422,22 +420,20 @@ int Move(Game *game, Coordinates legalMoves[], int legalMoveCount, int moveStatu
             {
                 if (game->whiteToPlay)
                 {
-                    if (game->whiteRemainingTime-(int)(clock() - passedTime)/ CLOCKS_PER_SEC<=0)
-                    {
-                        return 0;
-                    }
-                    
-                }else
-                {
-                     if (game->blackRemainingTime-(int)(clock() - passedTime)/ CLOCKS_PER_SEC<=0)
+                    if (game->whiteRemainingTime - (int)(clock() - passedTime) / CLOCKS_PER_SEC <= 0)
                     {
                         return 0;
                     }
                 }
-                
-                
+                else
+                {
+                    if (game->blackRemainingTime - (int)(clock() - passedTime) / CLOCKS_PER_SEC <= 0)
+                    {
+                        return 0;
+                    }
+                }
             }
-            
+
             printf("That move is not legal!\n");
         }
         else
@@ -597,8 +593,8 @@ Game *deserializeGameArray(char *jsonString, int *numGames)
     for (int i = 0; i < *numGames; i++)
     {
         cJSON *gameObject = cJSON_GetArrayItem(root, i);
-        games[i].whitePlayer =(char*) malloc(sizeof(char) * 50);
-        games[i].blackPlayer =(char*) malloc(sizeof(char) * 50);
+        games[i].whitePlayer = (char *)malloc(sizeof(char) * 50);
+        games[i].blackPlayer = (char *)malloc(sizeof(char) * 50);
         games[i].id = cJSON_GetObjectItem(gameObject, "id")->valueint;
         strcpy(games[i].whitePlayer, cJSON_GetObjectItem(gameObject, "whitePlayer")->valuestring);
         strcpy(games[i].blackPlayer, cJSON_GetObjectItem(gameObject, "blackPlayer")->valuestring);
@@ -628,8 +624,8 @@ Game *deserializeGameArray(char *jsonString, int *numGames)
 void copyGame(Game *dest, const Game *src)
 {
     dest->id = src->id;
-    dest->whitePlayer =(char*) malloc(sizeof(char) * 50);
-    dest->blackPlayer =(char*) malloc(sizeof(char) * 50);
+    dest->whitePlayer = (char *)malloc(sizeof(char) * 50);
+    dest->blackPlayer = (char *)malloc(sizeof(char) * 50);
     strcpy(dest->whitePlayer, src->whitePlayer);
     strcpy(dest->blackPlayer, src->blackPlayer);
     copyBoard(dest->Board, src->Board);
@@ -649,7 +645,7 @@ void copyGame(Game *dest, const Game *src)
     dest->blackMoveCount = src->blackMoveCount;
     dest->whiteReturn = src->whiteReturn;
     dest->blackReturn = src->blackReturn;
-    dest->isCompleated=src->isCompleated
+    dest->IsCompleated = src->IsCompleated;
 }
 bool CheckPlayers(Game game, char p1[], char p2[])
 {
@@ -692,9 +688,18 @@ void AddGame(Game *game, Game games[], int *count)
     }
     else
     {
-        Game *g =(Game*) malloc(sizeof(Game));
+        Game *g = (Game *)malloc(sizeof(Game));
         g = FindGameById(games, *count, game->id);
         copyGame(g, game);
+    }
+}
+void CompleateGame(Game *games, int gamesCount, int id)
+{
+    Game *gt = malloc(sizeof(Game));
+    gt = FindGameById(games, gamesCount, id);
+    if (gt != NULL)
+    {
+        gt->IsCompleated = true;
     }
 }
 #endif
