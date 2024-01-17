@@ -22,7 +22,7 @@ int gameSelector(Game games[], int gamesCount, Game *game, Score *scores, int sc
         printf("Unfinished games:\n");
         for (int i = 0; i < gamesCount; i++)
         {
-            if (CheckPlayers(games[i], game->whitePlayer, game->blackPlayer))
+            if (CheckPlayers(games[i], game->whitePlayer, game->blackPlayer)&&games[i].IsCompleated==false)
             {
                 printf("Game %d\n", games[i].id);
             }

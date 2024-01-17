@@ -21,7 +21,7 @@ int main()
     int blackScores[32] = {0};
     int whiteScores[32] = {0};
     int p2m[2] = {0};
-    Game currentGame = {.id = 0, .whitePlayer = (char *)malloc(50 * sizeof(char)), .blackPlayer = (char *)malloc(50 * sizeof(char)), .whiteRemainingTime = 0, .blackRemainingTime = 0, .timeLimit = 0, .isTimed = false, .whiteToPlay = false, .whiteScores = whiteScores, .whiteMoveCount = 0, .blackScores = blackScores, .blackMoveCount = 0, .whiteReturn = 2, .blackReturn = 2};
+    Game currentGame = {.id = 0, .whitePlayer = (char *)malloc(50 * sizeof(char)), .blackPlayer = (char *)malloc(50 * sizeof(char)), .whiteRemainingTime = 0, .blackRemainingTime = 0, .timeLimit = 0, .isTimed = false, .whiteToPlay = false, .whiteScores = whiteScores, .whiteMoveCount = 0, .blackScores = blackScores, .blackMoveCount = 0, .whiteReturn = 2, .blackReturn = 2,.IsCompleated=false};
     copyBoard(currentGame.Board, Board);
     for (int i = 0; i < 2; i++)
     {
@@ -79,7 +79,7 @@ int main()
                     {
                         printf("Game over!\n%s is victorious!\n",currentGame.whitePlayer);
                     }
-                    
+                    currentGame.IsCompleated=true;
                         
                     break;
                 }
@@ -106,6 +106,7 @@ int main()
                         saveStringToFile(gameScoresFile, serializeScoreArray(Scores, scoresCount));
                         system("cls");
                         printf("Game over!\n%s is victorious!\n",currentGame.whitePlayer);
+                        currentGame.IsCompleated=true;
                         break;
                     }
                 }
@@ -120,6 +121,7 @@ int main()
                         saveStringToFile(gameScoresFile, serializeScoreArray(Scores, scoresCount));
                         system("cls");
                         printf("Game over!\n%s is victorious!\n",currentGame.blackPlayer);
+                        currentGame.IsCompleated=true;
                         break;
                     }
                 }

@@ -30,6 +30,7 @@ typedef struct
     int blackMoveCount;
     int whiteReturn;
     int blackReturn;
+    bool IsCompleated;
 } Game;
 typedef struct
 {
@@ -417,6 +418,26 @@ int Move(Game *game, Coordinates legalMoves[], int legalMoveCount, int moveStatu
                     return 0;
                 }
             }
+            if (game->isTimed)
+            {
+                if (game->whiteToPlay)
+                {
+                    if (game->whiteRemainingTime-(int)(clock() - passedTime)/ CLOCKS_PER_SEC<=0)
+                    {
+                        return 0;
+                    }
+                    
+                }else
+                {
+                     if (game->blackRemainingTime-(int)(clock() - passedTime)/ CLOCKS_PER_SEC<=0)
+                    {
+                        return 0;
+                    }
+                }
+                
+                
+            }
+            
             printf("That move is not legal!\n");
         }
         else
@@ -547,6 +568,7 @@ char *serializeGameArray(Game games[], int numGames)
         cJSON_AddNumberToObject(gameObject, "blackRemainingTime", games[i].blackRemainingTime);
         cJSON_AddNumberToObject(gameObject, "timeLimit", games[i].timeLimit);
         cJSON_AddBoolToObject(gameObject, "isTimed", games[i].isTimed);
+        cJSON_AddBoolToObject(gameObject, "IsCompleated", games[i].IsCompleated);
         cJSON_AddStringToObject(gameObject, "pastTwoMoveTimes", p2mToString(games[i].pastTwoMoveTimes));
         cJSON_AddBoolToObject(gameObject, "whiteToPlay", games[i].whiteToPlay);
         cJSON_AddStringToObject(gameObject, "whiteScores", ScoresToString(games[i].whiteScores, games[i].whiteMoveCount));
@@ -589,6 +611,7 @@ Game *deserializeGameArray(char *jsonString, int *numGames)
         games[i].blackRemainingTime = cJSON_GetObjectItem(gameObject, "blackRemainingTime")->valueint;
         games[i].timeLimit = cJSON_GetObjectItem(gameObject, "timeLimit")->valueint;
         games[i].isTimed = cJSON_GetObjectItem(gameObject, "isTimed")->valueint;
+        games[i].IsCompleated = cJSON_GetObjectItem(gameObject, "IsCompleated")->valueint;
         stringTop2m(games[i].pastTwoMoveTimes, cJSON_GetObjectItem(gameObject, "pastTwoMoveTimes")->valuestring);
         games[i].whiteToPlay = cJSON_GetObjectItem(gameObject, "whiteToPlay")->valueint;
         games[i].whiteMoveCount = cJSON_GetObjectItem(gameObject, "whiteMoveCount")->valueint;
@@ -626,6 +649,7 @@ void copyGame(Game *dest, const Game *src)
     dest->blackMoveCount = src->blackMoveCount;
     dest->whiteReturn = src->whiteReturn;
     dest->blackReturn = src->blackReturn;
+    dest->isCompleated=src->isCompleated
 }
 bool CheckPlayers(Game game, char p1[], char p2[])
 {
